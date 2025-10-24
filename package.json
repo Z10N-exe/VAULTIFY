@@ -1,0 +1,31 @@
+{
+  "name": "vaultifychain",
+  "version": "1.0.0",
+  "description": "Secure file storage meets verifiable proof on blockchain",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "lucide-react": "^0.263.1",
+    "framer-motion": "^10.16.4",
+    "crypto-js": "^4.1.1",
+    "ethers": "^6.7.1",
+    "web3.storage": "^4.4.0",
+    "react-hot-toast": "^2.4.1",
+    "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "vite": "^4.4.5",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24"
+  }
+}
