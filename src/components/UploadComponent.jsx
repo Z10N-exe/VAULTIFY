@@ -4,7 +4,6 @@ import toast from 'react-hot-toast';
 import { encryptFile, generateFileHash } from '../utils/encryption';
 import { uploadToIPFS, addStatusListener, getUploadStatus } from '../utils/ipfs';
 import { uploadFileToBlockchain, addBlockchainListener, getBlockchainStatus } from '../utils/blockchain';
-import { testUpload } from '../utils/test-upload';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const UploadComponent = ({ onFileUploaded }) => {
@@ -55,15 +54,6 @@ const UploadComponent = ({ onFileUploaded }) => {
     toast.success('Encryption key generated!');
   };
 
-  const handleTestUpload = async () => {
-    console.log('🧪 Running upload test...');
-    const result = await testUpload();
-    if (result.success) {
-      toast.success('Upload test passed!');
-    } else {
-      toast.error(`Upload test failed: ${result.error}`);
-    }
-  };
 
   const handleSimpleUpload = async () => {
     console.log('🔍 Simple upload button clicked!');
@@ -433,19 +423,6 @@ const UploadComponent = ({ onFileUploaded }) => {
 
           {/* Action Buttons */}
           <div className="space-y-4">
-            {/* Test Button */}
-            <motion.button
-              onClick={() => {
-                console.log('🧪 Test button clicked!');
-                handleTestUpload();
-              }}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300 flex items-center justify-center space-x-3 [font-family:'Inter-SemiBold',Helvetica] shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Activity className="w-5 h-5" />
-              <span>Test Upload System</span>
-            </motion.button>
 
             {/* Simple Upload Button (IPFS only) */}
             <motion.button
