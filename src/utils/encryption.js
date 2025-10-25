@@ -6,23 +6,13 @@ export const generateKey = () => {
 };
 
 // Encrypt file with AES-256
-export const encryptFile = (file, password) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    
-    reader.onload = (e) => {
-      try {
-        const fileData = e.target.result;
-        const encrypted = CryptoJS.AES.encrypt(fileData, password).toString();
-        resolve(encrypted);
-      } catch (error) {
-        reject(error);
-      }
-    };
-    
-    reader.onerror = () => reject(new Error('Failed to read file'));
-    reader.readAsDataURL(file);
-  });
+export const encryptFile = (fileData, password) => {
+  try {
+    const encrypted = CryptoJS.AES.encrypt(fileData, password).toString();
+    return encrypted;
+  } catch (error) {
+    throw new Error('Encryption failed: ' + error.message);
+  }
 };
 
 // Decrypt file with AES-256

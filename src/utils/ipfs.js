@@ -1,68 +1,138 @@
-import { Web3Storage } from 'web3.storage';
+// Real IPFS implementation using NFT.Storage
 
-// Initialize Web3.Storage client
-const getClient = () => {
-  const token = process.env.REACT_APP_WEB3_STORAGE_TOKEN;
-  if (!token) {
-    throw new Error('Web3.Storage token not found. Please set REACT_APP_WEB3_STORAGE_TOKEN in your environment variables.');
-  }
-  return new Web3Storage({ token });
+// NFT.Storage API configuration
+const NFT_STORAGE_API_URL = 'https://api.nft.storage';
+const NFT_STORAGE_TOKEN = import.meta.env.VITE_NFT_STORAGE_TOKEN || '8343b323.441890267f0644628ddecbd69421a423';
+
+// Real-time status tracking
+let uploadStatus = {
+  isUploading: false,
+  progress: 0,
+  currentStep: '',
+  error: null
 };
 
-// Upload encrypted file to IPFS
+// Event listeners for real-time updates
+const statusListeners = new Set();
+
+export const addStatusListener = (callback) => {
+  statusListeners.add(callback);
+  return () => statusListeners.delete(callback);
+};
+
+export const getUploadStatus = () => uploadStatus;
+
+const updateStatus = (updates) => {
+  uploadStatus = { ...uploadStatus, ...updates };
+  statusListeners.forEach(listener => listener(uploadStatus));
+};
+
+// Upload encrypted file to IPFS with real-time progress
 export const uploadToIPFS = async (encryptedData, fileName) => {
   try {
-    const client = getClient();
-    
-    // Create a File object from the encrypted data
-    const file = new File([encryptedData], fileName, { 
+    updateStatus({ 
+      isUploading: true, 
+      progress: 0, 
+      currentStep: 'Preparing file...',
+      error: null 
+    });
+
+    // Create a Blob from the encrypted data
+    updateStatus({ progress: 10, currentStep: 'Creating file blob...' });
+    const blob = new Blob([encryptedData], { type: 'application/octet-stream' });
+    const file = new File([blob], fileName, { 
       type: 'application/octet-stream' 
     });
     
-    // Upload to IPFS
-    const cid = await client.put([file], {
-      name: `vaultifychain-${fileName}`,
-      maxRetries: 3
+    // Upload to NFT.Storage using direct API call
+    updateStatus({ progress: 20, currentStep: 'Uploading to IPFS...' });
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await fetch(`${NFT_STORAGE_API_URL}/upload`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NFT_STORAGE_TOKEN}`,
+      },
+      body: formData,
+    });
+    
+    updateStatus({ progress: 80, currentStep: 'Processing response...' });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('IPFS Upload Error:', response.status, response.statusText, errorText);
+      throw new Error(`Upload failed: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+    
+    const result = await response.json();
+    console.log('IPFS Upload Result:', result);
+    const cid = result.value.cid;
+    
+    updateStatus({ 
+      progress: 100, 
+      currentStep: 'Upload complete!',
+      isUploading: false 
     });
     
     return {
       cid,
-      url: `https://${cid}.ipfs.w3s.link/${fileName}`
+      url: `https://${cid}.ipfs.nftstorage.link/`
     };
   } catch (error) {
     console.error('IPFS upload failed:', error);
-    throw new Error(`Failed to upload to IPFS: ${error.message}`);
+    updateStatus({ 
+      isUploading: false, 
+      error: error.message,
+      currentStep: 'Upload failed'
+    });
+    
+    throw error;
   }
 };
 
 // Retrieve file from IPFS
 export const retrieveFromIPFS = async (cid) => {
   try {
-    const client = getClient();
-    const res = await client.get(cid);
+    // Fetch the file from IPFS using NFT.Storage gateway
+    const response = await fetch(`https://${cid}.ipfs.nftstorage.link/`);
     
-    if (!res.ok) {
-      throw new Error(`Failed to retrieve file: ${res.status}`);
+    if (!response.ok) {
+      throw new Error(`Failed to retrieve file: ${response.status}`);
     }
     
-    const files = await res.files();
-    if (files.length === 0) {
-      throw new Error('No files found');
-    }
+    // Convert response to File object
+    const blob = await response.blob();
+    const file = new File([blob], 'encrypted-file', { type: 'application/octet-stream' });
     
-    return files[0];
+    return file;
   } catch (error) {
     console.error('IPFS retrieval failed:', error);
-    throw new Error(`Failed to retrieve from IPFS: ${error.message}`);
+    throw error;
   }
 };
 
 // Get file info from IPFS
 export const getFileInfo = async (cid) => {
   try {
-    const client = getClient();
-    const status = await client.status(cid);
-    return status;
+    // Get file info from NFT.Storage API
+    const response = await fetch(`${NFT_STORAGE_API_URL}/${cid}`, {
+      headers: {
+        'Authorization': `Bearer ${NFT_STORAGE_TOKEN}`,
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to get file info: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    return {
+      cid: result.value.cid,
+      size: result.value.size,
+      created: result.value.created,
+      deals: result.value.deals
+    };
   } catch (error) {
     console.error('Failed to get file info:', error);
     throw new Error(`Failed to get file info: ${error.message}`);
