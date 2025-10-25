@@ -3,6 +3,7 @@ import { Upload, Lock, Shield, FileText, X, CheckCircle, Activity, Globe, Databa
 import toast from 'react-hot-toast';
 import { encryptFile, generateFileHash } from '../utils/encryption';
 import { uploadToIPFS, addStatusListener, getUploadStatus } from '../utils/ipfs';
+import { testIPFSConnection } from '../utils/test-ipfs';
 import { uploadFileToBlockchain, addBlockchainListener, getBlockchainStatus } from '../utils/blockchain';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -423,6 +424,16 @@ const UploadComponent = ({ onFileUploaded }) => {
 
           {/* Action Buttons */}
           <div className="space-y-4">
+            {/* Test IPFS Button */}
+            <motion.button
+              onClick={handleTestIPFS}
+              className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-xl font-bold text-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 flex items-center justify-center space-x-3 [font-family:'Inter-SemiBold',Helvetica] shadow-lg hover:shadow-xl"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Activity className="w-5 h-5" />
+              <span>Test IPFS Connection</span>
+            </motion.button>
 
             {/* Simple Upload Button (IPFS only) */}
             <motion.button

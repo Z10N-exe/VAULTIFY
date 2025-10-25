@@ -2,7 +2,12 @@
 
 // NFT.Storage API configuration
 const NFT_STORAGE_API_URL = 'https://api.nft.storage';
-const NFT_STORAGE_TOKEN = import.meta.env.VITE_NFT_STORAGE_TOKEN || '8343b323.441890267f0644628ddecbd69421a423';
+const NFT_STORAGE_TOKEN = import.meta.env.VITE_NFT_STORAGE_TOKEN;
+
+// Check if we have a valid token
+if (!NFT_STORAGE_TOKEN) {
+  console.warn('⚠️ NFT.Storage token not found. Please set VITE_NFT_STORAGE_TOKEN in your .env file');
+}
 
 // Real-time status tracking
 let uploadStatus = {
@@ -30,6 +35,11 @@ const updateStatus = (updates) => {
 // Upload encrypted file to IPFS with real-time progress
 export const uploadToIPFS = async (encryptedData, fileName) => {
   try {
+    // Check if we have a valid token
+    if (!NFT_STORAGE_TOKEN) {
+      throw new Error('NFT.Storage token not configured. Please set VITE_NFT_STORAGE_TOKEN in your .env file');
+    }
+
     updateStatus({ 
       isUploading: true, 
       progress: 0, 
@@ -48,6 +58,8 @@ export const uploadToIPFS = async (encryptedData, fileName) => {
     updateStatus({ progress: 20, currentStep: 'Uploading to IPFS...' });
     const formData = new FormData();
     formData.append('file', file);
+    
+    console.log('🔑 Using NFT.Storage token:', NFT_STORAGE_TOKEN.substring(0, 20) + '...');
     
     const response = await fetch(`${NFT_STORAGE_API_URL}/upload`, {
       method: 'POST',
