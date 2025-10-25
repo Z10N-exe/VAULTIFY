@@ -2,11 +2,11 @@
 pragma solidity ^0.8.19;
 
 /**
- * @title VaultifyChain
+ * @title AVO
  * @dev Secure file storage with blockchain verification on BlockDAG
- * @author VaultifyChain Team
+ * @author AVO Team
  */
-contract VaultifyChain {
+contract AVO {
     // Struct to store file records
     struct FileRecord {
         string fileHash;

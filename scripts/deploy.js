@@ -16,21 +16,22 @@ async function main() {
     console.log("🔗 https://docs.blockdagnetwork.io/block-explorer/evm/faucet");
   }
 
-  // Deploy VaultifyChain contract
-  console.log("📦 Deploying VaultifyChain contract...");
-  const VaultifyChain = await ethers.getContractFactory("VaultifyChain");
-  const vaultifyChain = await VaultifyChain.deploy();
+  // Deploy AVO contract
+  console.log("📦 Deploying AVO contract...");
+  const AVO = await ethers.getContractFactory("AVO");
+  const avo = await AVO.deploy();
   
   console.log("⏳ Waiting for deployment to be mined...");
-  await vaultifyChain.deployed();
+  await avo.waitForDeployment();
 
-  console.log("✅ VaultifyChain deployed successfully!");
-  console.log("📍 Contract address:", vaultifyChain.address);
-  console.log("🔗 BlockDAG Explorer:", `https://explorer.blockdag.network/address/${vaultifyChain.address}`);
+  console.log("✅ AVO deployed successfully!");
+  const contractAddress = await avo.getAddress();
+  console.log("📍 Contract address:", contractAddress);
+  console.log("🔗 BlockDAG Explorer:", `https://explorer.blockdag.network/address/${contractAddress}`);
   
   // Verify deployment
   console.log("🔍 Verifying deployment...");
-  const totalFiles = await vaultifyChain.getTotalFiles();
+  const totalFiles = await avo.getTotalFiles();
   console.log("📊 Total files in system:", totalFiles.toString());
 
   // Save deployment info

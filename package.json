@@ -1,7 +1,7 @@
 {
-  "name": "vaultifychain",
+  "name": "avo",
   "version": "1.0.0",
-  "description": "Secure file storage meets verifiable proof on blockchain",
+  "description": "AVO - Secure file storage meets verifiable proof on blockchain",
   "type": "module",
   "scripts": {
     "dev": "vite",

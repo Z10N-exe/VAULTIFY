@@ -214,7 +214,7 @@ function App() {
                 </div>
                 <div>
                   <h1 className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-[#C0FFTC] to-[#86efac] bg-clip-text text-transparent [font-family:'Inter-SemiBold',Helvetica]">
-                    VaultifyChain
+                    AVO
                   </h1>
                   <p className="text-xs text-white/70 [font-family:'Inter-Regular',Helvetica] hidden sm:block">BlockDAG Powered Storage</p>
                 </div>
@@ -334,7 +334,7 @@ function App() {
                         ease: "linear" 
                       }}
                     >
-                      BlockDAG VaultifyChain
+                      BlockDAG AVO
                     </motion.h1>
                     <motion.p 
                       className="text-lg sm:text-xl lg:text-2xl text-white font-semibold mb-6 lg:mb-8 [font-family:'Inter-SemiBold',Helvetica]"
@@ -636,7 +636,7 @@ function App() {
               </motion.div>
               <div>
                 <h1 className="text-lg lg:text-2xl font-bold bg-gradient-to-r from-[#C0FFTC] to-[#86efac] bg-clip-text text-transparent [font-family:'Inter-SemiBold',Helvetica]">
-                  VaultifyChain
+                  AVO
                 </h1>
                 <p className="text-xs text-white/70 [font-family:'Inter-Regular',Helvetica] hidden sm:block">BlockDAG Powered Storage</p>
               </div>
@@ -847,7 +847,7 @@ function App() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-7xl font-bold [font-family:'Inter-Medium',Helvetica] mb-6 lg:mb-8">
               <span className="text-white">Why Choose</span>
               <br />
-              <span className="text-[#bfff2c]">VaultifyChain?</span>
+              <span className="text-[#bfff2c]">AVO?</span>
             </h2>
             <p className="text-lg sm:text-xl lg:text-2xl text-white/80 [font-family:'Inter-Regular',Helvetica] max-w-4xl mx-auto">
               The most advanced blockchain-powered file storage solution with enterprise-grade security and transparency.
@@ -1049,7 +1049,7 @@ function App() {
                   Get Early Access
                 </h3>
                 <p className="text-white/80 text-lg [font-family:'Inter-Regular',Helvetica] mb-6">
-                  Join thousands of forward-thinking organizations already on the waitlist for VaultifyChain.
+                  Join thousands of forward-thinking organizations already on the waitlist for AVO.
                 </p>
               </div>
 
