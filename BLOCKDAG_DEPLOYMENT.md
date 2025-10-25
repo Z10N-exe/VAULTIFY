@@ -96,3 +96,4 @@ If MetaMask doesn't automatically switch to BlockDAG Testnet, add it manually:
 ⚠️ **IMPORTANT**: Never commit your private key to version control. The `.env` file should be in `.gitignore`.
 
 ✅ **Safe Practice**: Use a dedicated wallet for testing, not your main wallet.
+
